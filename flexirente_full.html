@@ -118,16 +118,16 @@
 window.addEventListener('load', function() {
   /* LFP means in percentage points (treatment ≥45 vs. control 42–44, age 62–65).
      Consistent with: overall DiD ≈ –21.9 pp (FE model), peak effect 2016–17. */
-  var years = ['2010','2011','2012','2013','2015','2016','2017','2018','2019'];
-  /* Index:     0       1       2       3       4       5       6       7       8  */
-  /* Reform 2014 is between index 3 (2013) and index 4 (2015) → midpoint pixel.   */
-  /* Flexirente 2017 is at index 6.                                                */
-  var reformIdx  = 3;  // last pre-reform label index (2013)
-  var postIdx    = 4;  // first post-reform label index (2015)
-  var flexiIdx   = 6;  // Flexirente reform label index (2017)
+  var years = ['2009','2010','2011','2012','2013','2015','2016','2017','2018','2019'];
+  /* Index:     0       1       2       3       4       5       6       7       8       9  */
+  /* Reform 2014 is between index 4 (2013) and index 5 (2015) → midpoint pixel.           */
+  /* Flexirente 2017 is at index 7.                                                        */
+  var reformIdx  = 4;  // last pre-reform label index (2013)
+  var postIdx    = 5;  // first post-reform label index (2015)
+  var flexiIdx   = 7;  // Flexirente reform label index (2017)
 
-  var treat = [65.2, 66.5, 67.2, 67.3, 63.2, 60.1, 58.9, 60.7, 62.1];
-  var ctrl  = [49.8, 50.6, 51.5, 52.8, 56.7, 60.1, 61.4, 62.4, 63.4];
+  var treat = [60.0, 58.3, 58.3, 66.2, 65.8, 57.1, 52.7, 57.4, 60.0, 67.2];
+  var ctrl  = [43.2, 56.2, 51.0, 53.3, 51.8, 54.7, 60.4, 62.4, 58.1, 66.7];
 
   var reformPlugin = {
     id: 'reformLines',
@@ -194,7 +194,7 @@ window.addEventListener('load', function() {
           title: { display: true, text: 'Share employed (LFP, %)', font: { size: 11 } },
           ticks: { callback: function(v) { return v + '%'; }, font: { size: 10 }, stepSize: 5 },
           grid: { color: 'rgba(0,0,0,0.05)' },
-          min: 44, max: 78
+          min: 38, max: 72
         }
       }
     }
