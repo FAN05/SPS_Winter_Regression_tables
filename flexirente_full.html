@@ -4,18 +4,23 @@
 <head>
 <meta charset="UTF-8">
 <style>
-  body      { font-family: sans-serif; padding: 2rem;
-               max-width: 1000px; margin: auto; }
-  h1        { color: #1E2B5C; }
-  h2        { color: #35746E; margin-top: 2rem; }
-  img       { width: 100%; border: 1px solid #eee;
-               border-radius: 4px; margin-top: 1rem; }
   .footnote { font-size: 11px; color: #888; margin-top: 0.5rem; }
-  .verdict  { background: #f0f7f0; border-left: 4px solid #35746E;
-               padding: 1rem; margin: 1.5rem 0; border-radius: 4px; }
-  table     { width: 100%; border-collapse: collapse; }
-  th        { background: #1E2B5C; color: white; padding: 8px 10px; }
-  td        { padding: 7px 10px; border-bottom: 1px solid #eee; }
+  .verdict  { background: #e8f2ec; border-left: 4px solid #006633;
+               padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 6px;
+               font-size: 0.88rem; line-height: 1.6; }
+
+  /* ── Override tinytable header to LMU green ── */
+  .tinytable thead tr { background: #006633 !important; }
+  .tinytable thead th { color: #fff !important; font-size: 0.78rem;
+    letter-spacing: 0.04em; padding: 11px 16px !important; }
+  .tinytable { width: 100% !important; border-collapse: collapse; }
+  .tinytable td { padding: 9px 16px !important; font-size: 0.84rem; }
+  .tinytable tfoot td { font-size: 0.75rem; color: #888;
+    padding: 8px 16px !important; border-top: 1px solid rgba(0,0,0,0.08); }
+  .tinytable tbody tr:hover { background: rgba(0,102,51,0.04); }
+  .tt-card { background: #fff; border: 1px solid rgba(0,102,51,0.12);
+    border-radius: 12px; overflow-x: auto;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.04); margin-bottom: 1rem; }
 </style>
   <style>
     /* ─── Page wrapper ─── */
@@ -52,7 +57,7 @@
     }
     .nav-back:hover { background: var(--green-light); border-color: rgba(0,102,51,0.3); }
     .nav-brand { font-size: 0.71rem; color: var(--text-3); font-weight: 400; letter-spacing: 0.03em; }
-    .page-content { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .page-content { max-width: 1400px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
     .page-heading { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
     .page-heading .kicker {
       font-size: 0.59rem; font-weight: 700; letter-spacing: 0.15em;
@@ -76,7 +81,7 @@
     .page-footer {
       border-top: 1px solid var(--border);
       padding: 1.5rem 2rem;
-      max-width: 1200px; margin: 0 auto;
+      max-width: 1400px; margin: 0 auto;
       font-size: 0.7rem; color: var(--text-3);
       display: flex; justify-content: space-between; align-items: center;
       flex-wrap: wrap; gap: 0.5rem;
@@ -260,8 +265,8 @@ window.addEventListener('load', function() {
     #tinytable_vxrxn6kcmwzxyst5sml9 td.tinytable_css_6hbfn9ls8b5mls9cbd7j, #tinytable_vxrxn6kcmwzxyst5sml9 th.tinytable_css_6hbfn9ls8b5mls9cbd7j { text-align: left }
     #tinytable_vxrxn6kcmwzxyst5sml9 td.tinytable_css_z3s9sjlbjioi97211yjj, #tinytable_vxrxn6kcmwzxyst5sml9 th.tinytable_css_z3s9sjlbjioi97211yjj {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
-    <div class="container">
-      <table class="tinytable" id="tinytable_vxrxn6kcmwzxyst5sml9" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'>
+    <div class="tt-card"><div class="container">
+      <table class="tinytable" id="tinytable_vxrxn6kcmwzxyst5sml9" style="width:100%;" data-quarto-disable-processing='true'>
         
         <thead>
               <tr>
@@ -341,7 +346,7 @@ window.addEventListener('load', function() {
                 </tr>
         </tbody>
       </table>
-    </div>
+    </div></div><!-- tt-card -->
     <!-- postamble start -->
   </div><!-- .page-content -->
 <footer class="page-footer">
