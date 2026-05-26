@@ -3,6 +3,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Income Gradient (Quintiles) – Rente mit 63</title>
 <style>
   body  { font-family: sans-serif; padding: 2rem; max-width: 1000px; margin: auto; }
   h1    { color: #1E2B5C; }
@@ -21,8 +23,83 @@
   .badge-ns  { background: #e8eef8; color: #3266ad; padding: 2px 8px;
                border-radius: 10px; font-size: 11px; }
 </style>
+  <style>
+    /* ─── Page wrapper ─── */
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #f8f7f4; --surface: #ffffff;
+      --border: rgba(0,0,0,0.08);
+      --text: #111110; --text-2: #6b6b67; --text-3: #aeada8;
+      --green: #006633; --green-mid: #008040;
+      --green-light: #e8f2ec; --green-dim: rgba(0,102,51,0.08);
+      --green-border: rgba(0,102,51,0.18);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; padding: 0;
+      font-family: system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      background: var(--bg); color: var(--text);
+    }
+    .page-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.74rem; font-weight: 600; color: var(--green);
+      text-decoration: none; letter-spacing: 0.02em;
+      padding: 0.28rem 0.7rem; border-radius: 6px;
+      border: 1px solid var(--green-border); background: var(--green-dim);
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .nav-back:hover { background: var(--green-light); border-color: rgba(0,102,51,0.3); }
+    .nav-brand { font-size: 0.71rem; color: var(--text-3); font-weight: 400; letter-spacing: 0.03em; }
+    .page-content { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .page-heading { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .page-heading .kicker {
+      font-size: 0.59rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .page-heading .kicker::before { content:''; width:20px; height:1px; background:var(--green); }
+    .page-heading h1 {
+      font-size: 1.5rem; font-weight: 300; letter-spacing: -0.02em;
+      color: var(--text); margin: 0 0 0.3rem; line-height: 1.3;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    .page-heading .sub { font-size: 0.79rem; color: var(--text-2); line-height: 1.6; }
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px; overflow: auto;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.03);
+      padding: 1.5rem 1.5rem 1rem;
+    }
+    .page-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      max-width: 1200px; margin: 0 auto;
+      font-size: 0.7rem; color: var(--text-3);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+    @media(max-width:640px){
+      .page-nav { padding: 0.65rem 1rem; }
+      .page-content { padding: 1.5rem 1rem 4rem; }
+      .page-footer { padding: 1.2rem 1rem; }
+    }
+  </style>
 </head>
 <body>
+<nav class="page-nav">
+  <a class="nav-back" href="index.html">&#8592;&nbsp;Overview</a>
+  <span class="nav-brand">B&ouml;hm &amp; Wilhelmi &middot; SPS Pareto Seminar &middot; LMU Munich</span>
+</nav>
+<div class="page-content">
 
 <h1>RQ2 – Treatment Effect by Income Quintile</h1>
 <p style="color:#888; font-size:13px;">
@@ -96,6 +173,11 @@
   Red = p &lt; 0.05, Blue = p &ge; 0.05
 </p>
 
+</div><!-- .page-content -->
+<footer class="page-footer">
+  <span>Konstantin B&ouml;hm &amp; Anton Wilhelmi &mdash; <em>Rente&nbsp;mit&nbsp;63</em></span>
+  <span>LMU Munich &middot; Winter Term 2025/26</span>
+</footer>
 </body>
 </html>
 
