@@ -271,15 +271,20 @@
 
     .card-body { flex: 1; min-width: 0; }
     .card-title {
-      font: 500 0.875rem/1 system-ui, sans-serif;
+      font: 500 0.875rem/1.3 system-ui, sans-serif;
       color: var(--text-2); display: block; margin-bottom: 4px;
       transition: color 0.2s;
     }
     .card-desc {
-      font: 400 0.73rem/1 system-ui, sans-serif;
-      color: var(--text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font: 400 0.73rem/1.5 system-ui, sans-serif;
+      color: var(--text-3);
+      white-space: normal;
+      word-break: break-word;
     }
-    .card-right { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+    .card-right {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 0.4rem; flex-shrink: 0;
+    }
     .tag {
       font: 700 0.58rem/1 system-ui, sans-serif;
       letter-spacing: 0.07em; text-transform: uppercase;
@@ -288,10 +293,17 @@
     }
     .tag-html { background: var(--tag-main-bg); color: var(--tag-main); }
     .card-arrow {
-      font-size: 0.85rem; color: var(--text-3);
+      font-size: 0.85rem; color: var(--green);
       opacity: 0; transform: translateX(-6px);
       transition: opacity 0.2s, transform 0.2s;
       font-family: system-ui, sans-serif;
+    }
+    @media(max-width:480px){
+      .card { padding: 0.9rem 1rem; gap: 0.8rem; }
+      .card-badge { width: 34px; height: 34px; font-size: 0.52rem; }
+      .card-title { font-size: 0.84rem; }
+      .card-desc { font-size: 0.7rem; }
+      .card-right { flex-direction: row; align-items: center; gap: 0.5rem; }
     }
 
     /* ─── FOOTER ─── */
@@ -320,12 +332,21 @@
     @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
     @media(max-width:620px){
+      .hero { padding: 4rem 1.25rem 3.5rem; }
+      .main { padding: 3rem 1.25rem 5rem; }
+      footer { padding: 2rem 1.25rem; }
+      h1 { font-size: 1.9rem; }
       .stat-row { grid-template-columns: 1fr 1fr; }
+      .stat { padding: 1.1rem 1rem; }
       .stat:nth-child(2){ border-right:none }
       .stat:nth-child(3){ border-top:1px solid var(--border) }
       .stat:nth-child(4){ border-top:1px solid var(--border); border-right:none }
-      h1 { font-size: 2rem; }
-      .card-download { flex-direction: column; align-items: flex-start; }
+      .stat-num { font-size: 1.5rem; }
+      .card-download { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .btn-download { width: 100%; justify-content: center; }
+      .dl-icon { width: 48px; height: 48px; }
+      .finding-text { font-size: 0.95rem; }
+      .finding { gap: 0 1.25rem; }
     }
   </style>
 </head>
