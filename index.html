@@ -5,36 +5,206 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Böhm & Wilhelmi — SPS Winter 2025/26</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px;
-           margin: 3rem auto; padding: 0 1.5rem; color: #1a1a1a; background: #fafaf9; }
-    h1 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.25rem; }
-    p.sub { color: #666; font-size: 0.9rem; margin: 0 0 2rem; }
-    .card { background: white; border: 1px solid #e5e5e5; border-radius: 10px;
-            padding: 1rem 1.25rem; margin-bottom: 0.75rem;
-            display: flex; align-items: center; gap: 1rem; }
-    .icon { font-size: 1.5rem; }
-    .info { flex: 1; }
-    .info strong { font-size: 0.95rem; display: block; }
-    .info span { font-size: 0.8rem; color: #888; }
-    a.btn { background: #1a1a1a; color: white; padding: 0.4rem 1rem;
-            border-radius: 6px; text-decoration: none; font-size: 0.85rem;
-            white-space: nowrap; }
-    a.btn:hover { background: #333; }
-    hr { border: none; border-top: 1px solid #eee; margin: 2rem 0; }
-    footer { font-size: 0.8rem; color: #aaa; text-align: center; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 740px;
+      margin: 3rem auto;
+      padding: 0 1.5rem 4rem;
+      color: #1a1a1a;
+      background: #fafaf9;
+    }
+    header { margin-bottom: 2.5rem; }
+    header h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.2rem; }
+    header p { color: #888; font-size: 0.875rem; }
+
+    .section { margin-bottom: 2rem; }
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 0.6rem;
+      padding-left: 0.25rem;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e8e8e5;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .icon-pdf  { background: #fde8e8; }
+    .icon-main { background: #e8f0fe; }
+    .icon-rq   { background: #e8f5e9; }
+    .icon-rob  { background: #fff8e1; }
+
+    .card-info { flex: 1; min-width: 0; }
+    .card-info strong { font-size: 0.9rem; display: block; font-weight: 500; }
+    .card-info span { font-size: 0.78rem; color: #999; }
+
+    a.btn {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    a.btn-dark  { background: #1a1a1a; color: white; }
+    a.btn-dark:hover { background: #333; }
+    a.btn-light { background: white; color: #1a1a1a; border: 1px solid #ddd; }
+    a.btn-light:hover { background: #f5f5f5; }
+
+    hr { border: none; border-top: 1px solid #eee; margin: 2.5rem 0; }
+    footer { font-size: 0.78rem; color: #bbb; text-align: center; }
   </style>
 </head>
 <body>
-  <h1>Böhm & Wilhelmi — Rente mit 63</h1>
-  <p class="sub">SPS Pareto Seminar · Winter Term 2025/26</p>
 
-  <div class="card">
-    <div class="icon">📄</div>
-    <div class="info">
-      <strong>Executive Summary</strong>
-      <span>PDF · 87 KB</span>
+  <header>
+    <h1>Böhm &amp; Wilhelmi — Rente mit 63</h1>
+    <p>SPS Pareto Seminar &middot; Winter Term 2025/26</p>
+  </header>
+
+  <!-- Executive Summary -->
+  <div class="section">
+    <div class="section-title">Dokument</div>
+    <div class="card">
+      <div class="card-icon icon-pdf">📄</div>
+      <div class="card-info">
+        <strong>Executive Summary</strong>
+        <span>PDF &middot; 87 KB</span>
+      </div>
+      <a class="btn btn-dark" href="SPS_Winter_Executive_Summary.pdf" download>Download</a>
     </div>
-    <a class="btn" href="SPS_Winter_Executive_Summary.pdf" download>Download</a>
+  </div>
+
+  <!-- Hauptmodelle -->
+  <div class="section">
+    <div class="section-title">Hauptmodelle</div>
+    <div class="card">
+      <div class="card-icon icon-main">📊</div>
+      <div class="card-info">
+        <strong>Modellübersicht</strong>
+        <span>Alle Spezifikationen im Überblick</span>
+      </div>
+      <a class="btn btn-light" href="modell_uebersicht.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-main">📊</div>
+      <div class="card-info">
+        <strong>Hauptmodelle (Final)</strong>
+        <span>DiD Basisspezifikation mit FE</span>
+      </div>
+      <a class="btn btn-light" href="final_hauptmodelle.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-main">📊</div>
+      <div class="card-info">
+        <strong>Interaktionsmodelle (FE)</strong>
+        <span>Heterogenitätsanalyse mit Interaktionstermen</span>
+      </div>
+      <a class="btn btn-light" href="interaktionsmodelle_fe.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-main">📈</div>
+      <div class="card-info">
+        <strong>Parallel Trends</strong>
+        <span>Dynamische DiD &amp; Pre-Trend-Test</span>
+      </div>
+      <a class="btn btn-light" href="parallel_trends_full.html" target="_blank">Öffnen</a>
+    </div>
+  </div>
+
+  <!-- Heterogenität -->
+  <div class="section">
+    <div class="section-title">Heterogenitätsanalysen</div>
+    <div class="card">
+      <div class="card-icon icon-rq">🗺️</div>
+      <div class="card-info">
+        <strong>RQ1 — Ost/West</strong>
+        <span>Regionale Unterschiede im Behandlungseffekt</span>
+      </div>
+      <a class="btn btn-light" href="final_rq1_ostwest.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-rq">🎓</div>
+      <div class="card-info">
+        <strong>RQ2 — Bildung</strong>
+        <span>Effektheterogenität nach Bildungsgrad</span>
+      </div>
+      <a class="btn btn-light" href="final_rq2_bildung.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-rq">💶</div>
+      <div class="card-info">
+        <strong>RQ2 — Einkommen (Tertile)</strong>
+        <span>Effektheterogenität nach Einkommenstertilen</span>
+      </div>
+      <a class="btn btn-light" href="final_rq2_einkommen.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-rq">💶</div>
+      <div class="card-info">
+        <strong>RQ2 — Einkommen (Quintile)</strong>
+        <span>Effektheterogenität nach Einkommensquintilen</span>
+      </div>
+      <a class="btn btn-light" href="rq2_income_quintiles.html" target="_blank">Öffnen</a>
+    </div>
+  </div>
+
+  <!-- Robustheit -->
+  <div class="section">
+    <div class="section-title">Robustheitschecks</div>
+    <div class="card">
+      <div class="card-icon icon-rob">🧪</div>
+      <div class="card-info">
+        <strong>Placebo-Tests</strong>
+        <span>Falsifikation mit nicht-eligiblen Beitragsjahr-Schwellen</span>
+      </div>
+      <a class="btn btn-light" href="placebo_tests.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-rob">🍩</div>
+      <div class="card-info">
+        <strong>Robustness Donut</strong>
+        <span>Ausschluss von Beobachtungen nahe der Reformgrenze</span>
+      </div>
+      <a class="btn btn-light" href="robustness_donut.html" target="_blank">Öffnen</a>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-rob">📉</div>
+      <div class="card-info">
+        <strong>Flexirente (Full)</strong>
+        <span>Spillover-Analyse zur Flexirenten-Reform</span>
+      </div>
+      <a class="btn btn-light" href="flexirente_full.html" target="_blank">Öffnen</a>
+    </div>
+  </div>
+
+  <hr>
+  <footer>Konstantin Böhm &amp; Anton Wilhelmi &middot; 2026</footer>
+
+</body>
+</html>    <a class="btn" href="SPS_Winter_Executive_Summary.pdf" download>Download</a>
   </div>
 
   <div class="card">
