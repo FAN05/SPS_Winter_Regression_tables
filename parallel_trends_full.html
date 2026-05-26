@@ -160,107 +160,115 @@
 </p>
 
 <h2>Parallel Trends Plots</h2>
-<div class="grid">
-  <div style="background:var(--surface,#fff);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem 1.4rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-    <canvas id="ptChart0" height="200"></canvas>
+<p class="footnote" style="margin-bottom:1rem;">Mean LFP by year for treatment vs. control group. Reform year 2014 excluded. ★ = main specification.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+  <div style="background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+    <div style="position:relative;height:250px;"><canvas id="ptChart0"></canvas></div>
   </div>
-  <div style="background:var(--surface,#fff);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem 1.4rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-    <canvas id="ptChart1" height="200"></canvas>
+  <div style="background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+    <div style="position:relative;height:250px;"><canvas id="ptChart1"></canvas></div>
   </div>
-  <div style="background:var(--surface,#fff);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem 1.4rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-    <canvas id="ptChart2" height="200"></canvas>
+  <div style="background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+    <div style="position:relative;height:250px;"><canvas id="ptChart2"></canvas></div>
   </div>
-  <div style="background:var(--surface,#fff);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem 1.4rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
-    <canvas id="ptChart3" height="200"></canvas>
+  <div style="background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.04);">
+    <div style="position:relative;height:250px;"><canvas id="ptChart3"></canvas></div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-(function(){
-  const years  = [2010,2011,2012,2013,2015,2016,2017,2018,2019];
-  const treat  = [0.652,0.665,0.672,0.673,0.632,0.601,0.589,0.607,0.621];
+window.addEventListener('load', function() {
+  var years = ['2010','2011','2012','2013','2015','2016','2017','2018','2019'];
+  var reformIdx = 3; var postIdx = 4; // index of 2013 and 2015
 
-  const controls = {
-    '35–44': [0.430,0.438,0.447,0.455,0.495,0.524,0.535,0.545,0.556],
-    '40–44': [0.476,0.484,0.494,0.503,0.541,0.569,0.579,0.590,0.601],
-    '41–44': [0.487,0.495,0.505,0.514,0.552,0.579,0.590,0.600,0.611],
-    '42–44': [0.498,0.506,0.515,0.528,0.567,0.601,0.614,0.624,0.634]
-  };
-  const pvals = {'35–44':0.144,'40–44':0.108,'41–44':0.091,'42–44':0.097};
-  const dids  = {'35–44':-0.170,'40–44':-0.137,'41–44':-0.142,'42–44':-0.130};
-  const isMain= {'35–44':false,'40–44':false,'41–44':false,'42–44':true};
+  /* All values in percentage points. Consistent with DiD estimates and
+     peak-effect in 2016-17 (index.html). */
+  var treat = [65.2, 66.5, 67.2, 67.3, 63.2, 60.1, 58.9, 60.7, 62.1];
 
-  const reformPlugin = {
-    id:'reformLine',
-    afterDraw(chart){
-      const {ctx,scales:{x,chartArea}} = chart;
-      const px = x.getPixelForValue(2013) + (x.getPixelForValue(2015)-x.getPixelForValue(2013))/2;
-      ctx.save();
-      ctx.strokeStyle='#CC7C2E'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
-      ctx.beginPath(); ctx.moveTo(px,chartArea.top); ctx.lineTo(px,chartArea.bottom); ctx.stroke();
-      ctx.fillStyle='#CC7C2E'; ctx.font='10.5px system-ui';
-      ctx.fillText('Reform 2014', px+3, chartArea.top+13);
-      ctx.restore();
-    }
-  };
+  var specs = [
+    { label:'35–44', data:[43.0,43.8,44.7,45.5,49.5,52.4,53.5,54.5,55.6], did:-17.0, pval:0.144, main:false },
+    { label:'40–44', data:[47.6,48.4,49.4,50.3,54.1,56.9,57.9,59.0,60.1], did:-13.7, pval:0.108, main:false },
+    { label:'41–44', data:[48.7,49.5,50.5,51.4,55.2,57.9,59.0,60.0,61.1], did:-14.2, pval:0.091, main:false },
+    { label:'42–44', data:[49.8,50.6,51.5,52.8,56.7,60.1,61.4,62.4,63.4], did:-13.0, pval:0.097, main:true  }
+  ];
 
-  Object.entries(controls).forEach(([label,ctrlData],idx)=>{
-    const canvasId = 'ptChart'+idx;
-    const main = isMain[label];
-    new Chart(document.getElementById(canvasId),{
-      type:'line',
-      plugins:[reformPlugin],
-      data:{
-        labels:years,
-        datasets:[
+  specs.forEach(function(spec, idx) {
+    var plugin = {
+      id: 'reform_' + idx,
+      afterDraw: function(chart) {
+        try {
+          var ctx = chart.ctx, ca = chart.chartArea, x = chart.scales.x;
+          var p1 = x.getPixelForValue(reformIdx), p2 = x.getPixelForValue(postIdx);
+          var px = (p1 + p2) / 2;
+          ctx.save();
+          ctx.strokeStyle = '#CC7C2E'; ctx.lineWidth = 1.5; ctx.setLineDash([5,4]);
+          ctx.beginPath(); ctx.moveTo(px, ca.top); ctx.lineTo(px, ca.bottom); ctx.stroke();
+          ctx.fillStyle = '#CC7C2E'; ctx.font = '10px system-ui';
+          ctx.fillText('Reform 2014', px + 3, ca.top + 13);
+          ctx.restore();
+        } catch(e) {}
+      }
+    };
+
+    new Chart(document.getElementById('ptChart' + idx), {
+      type: 'line',
+      plugins: [plugin],
+      data: {
+        labels: years,
+        datasets: [
           {
-            label:'Treatment (≥ 45 years)',
-            data:treat,
-            borderColor:'#006633', backgroundColor:'rgba(0,102,51,0.07)',
-            borderWidth:2, pointRadius:4.5, tension:0.3, fill:false
+            label: 'Treatment (≥…45 years)',
+            data: treat,
+            borderColor: '#006633', backgroundColor: 'rgba(0,102,51,0.08)',
+            borderWidth: 2.2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, fill: false
           },
           {
-            label:`Control (${label} years)`,
-            data:ctrlData,
-            borderColor: main ? '#1E2B5C' : '#64748b',
-            backgroundColor:'rgba(30,43,92,0.05)',
-            borderWidth:2, pointRadius:4.5, tension:0.3, fill:false,
-            borderDash:[5,3]
+            label: 'Control (' + spec.label + ' years)',
+            data: spec.data,
+            borderColor: spec.main ? '#1E2B5C' : '#64748b',
+            backgroundColor: 'rgba(30,43,92,0.05)',
+            borderWidth: 2.2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, fill: false,
+            borderDash: [5,3]
           }
         ]
       },
-      options:{
-        animation:{duration:900+idx*120,easing:'easeOutCubic'},
-        responsive:true,
-        plugins:{
-          title:{
-            display:true,
-            text: (main ? '★ ' : '') + 'Control: ' + label + ' contribution years',
-            font:{size:12, weight:main?'bold':'normal'},
-            color: main ? '#006633' : '#374151',
-            padding:{bottom:4}
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 850 + idx * 150, easing: 'easeOutCubic' },
+        plugins: {
+          title: {
+            display: true,
+            text: (spec.main ? '★ ' : '') + 'Control: ' + spec.label + ' contribution years',
+            font: { size: 12, weight: spec.main ? 'bold' : 'normal' },
+            color: spec.main ? '#006633' : '#374151',
+            padding: { bottom: 2 }
           },
-          subtitle:{
-            display:true,
-            text:`DiD = ${(dids[label]*100).toFixed(1)} pp | Parallel Trends: p = ${pvals[label]}`,
-            font:{size:10.5}, color:'#6b7280', padding:{bottom:8}
+          subtitle: {
+            display: true,
+            text: 'DiD = ' + spec.did.toFixed(1) + ' pp • Parallel Trends p = ' + spec.pval,
+            font: { size: 10.5 }, color: '#6b7280', padding: { bottom: 6 }
           },
-          legend:{position:'bottom',labels:{font:{size:10},padding:10}},
-          tooltip:{callbacks:{label(c){return ` ${c.dataset.label}: ${(c.parsed.y*100).toFixed(1)}%`;}}}
+          legend: { position: 'bottom', labels: { font: { size: 10 }, padding: 8, boxWidth: 24 } },
+          tooltip: {
+            callbacks: {
+              label: function(c) { return '  ' + c.dataset.label + ': ' + c.parsed.y.toFixed(1) + '%'; }
+            }
+          }
         },
-        scales:{
-          x:{ticks:{font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}},
-          y:{
-            ticks:{callback:v=>(v*100).toFixed(0)+'%',font:{size:10}},
-            grid:{color:'rgba(0,0,0,0.05)'},
-            min:0.38, max:0.75
+        scales: {
+          x: { ticks: { font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+          y: {
+            min: 38, max: 76,
+            ticks: { callback: function(v) { return v + '%'; }, font: { size: 10 }, stepSize: 5 },
+            grid: { color: 'rgba(0,0,0,0.05)' }
           }
         }
       }
     });
   });
-})();
+});
 </script>
 
 

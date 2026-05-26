@@ -111,86 +111,95 @@
 <h2>Treatment–Control Differential by Year</h2>
 
 <div style="background:var(--surface,#fff);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.5rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);margin-top:1rem;">
-  <canvas id="flexiChart" height="160"></canvas>
+  <div style="position:relative;height:320px;"><canvas id="flexiChart"></canvas></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-(function(){
-  /* Raw LFP means by year  (treatment ≥45 vs. control 42–44, age 62–65)
-     Consistent with: overall DiD ≈ –0.219 (FE model), pre-trends pass,
-     peak effect 2016–2017 (Rente mit 63 cohort phasing). */
-  const years = [2010,2011,2012,2013,2015,2016,2017,2018,2019];
-  const treat = [0.652,0.665,0.672,0.673,0.632,0.601,0.589,0.607,0.621];
-  const ctrl  = [0.498,0.506,0.515,0.528,0.567,0.601,0.614,0.624,0.634];
+window.addEventListener('load', function() {
+  /* LFP means in percentage points (treatment ≥45 vs. control 42–44, age 62–65).
+     Consistent with: overall DiD ≈ –21.9 pp (FE model), peak effect 2016–17. */
+  var years = ['2010','2011','2012','2013','2015','2016','2017','2018','2019'];
+  /* Index:     0       1       2       3       4       5       6       7       8  */
+  /* Reform 2014 is between index 3 (2013) and index 4 (2015) → midpoint pixel.   */
+  /* Flexirente 2017 is at index 6.                                                */
+  var reformIdx  = 3;  // last pre-reform label index (2013)
+  var postIdx    = 4;  // first post-reform label index (2015)
+  var flexiIdx   = 6;  // Flexirente reform label index (2017)
 
-  const reformPlugin = {
-    id:'reformLines',
-    afterDraw(chart){
-      const {ctx,scales:{x,chartArea}} = chart;
-      ['2014 – Reform', '2017 – Flexirente'].forEach((label,i)=>{
-        const yr = i===0 ? 2014.5 : 2017.5;   // visual position (2014 excluded from axis)
-        const px = x.getPixelForValue(i===0 ? 2014 : 2017);
-        if(!px) return;
-        ctx.save();
-        ctx.strokeStyle = i===0 ? '#CC7C2E' : '#8B5CF6';
-        ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
-        ctx.beginPath(); ctx.moveTo(px,chartArea.top); ctx.lineTo(px,chartArea.bottom); ctx.stroke();
-        ctx.fillStyle = i===0 ? '#CC7C2E' : '#8B5CF6';
-        ctx.font='11px system-ui';
-        ctx.fillText(label, px+4, chartArea.top+14+(i*16));
-        ctx.restore();
-      });
+  var treat = [65.2, 66.5, 67.2, 67.3, 63.2, 60.1, 58.9, 60.7, 62.1];
+  var ctrl  = [49.8, 50.6, 51.5, 52.8, 56.7, 60.1, 61.4, 62.4, 63.4];
+
+  var reformPlugin = {
+    id: 'reformLines',
+    afterDraw: function(chart) {
+      try {
+        var ctx = chart.ctx, ca = chart.chartArea, x = chart.scales.x;
+        var lines = [
+          { idx: (reformIdx + postIdx) / 2, label: 'Reform 2014', color: '#CC7C2E' },
+          { idx: flexiIdx,                  label: 'Flexirente 2017', color: '#8B5CF6' }
+        ];
+        lines.forEach(function(line, i) {
+          var px = x.getPixelForValue(line.idx);
+          ctx.save();
+          ctx.strokeStyle = line.color; ctx.lineWidth = 1.5; ctx.setLineDash([5,4]);
+          ctx.beginPath(); ctx.moveTo(px, ca.top); ctx.lineTo(px, ca.bottom); ctx.stroke();
+          ctx.fillStyle = line.color; ctx.font = '11px system-ui';
+          ctx.fillText(line.label, px + 4, ca.top + 14 + i * 17);
+          ctx.restore();
+        });
+      } catch(e) {}
     }
   };
 
-  new Chart(document.getElementById('flexiChart'),{
-    type:'line',
-    plugins:[reformPlugin],
-    data:{
+  new Chart(document.getElementById('flexiChart'), {
+    type: 'line',
+    plugins: [reformPlugin],
+    data: {
       labels: years,
-      datasets:[
+      datasets: [
         {
-          label:'Treatment group (≥ 45 contribution years)',
+          label: 'Treatment group (≥ 45 contribution years)',
           data: treat,
-          borderColor:'#006633', backgroundColor:'rgba(0,102,51,0.08)',
-          borderWidth:2.2, pointRadius:5, pointHoverRadius:7, tension:0.3, fill:false
+          borderColor: '#006633', backgroundColor: 'rgba(0,102,51,0.08)',
+          borderWidth: 2.2, pointRadius: 5, pointHoverRadius: 7, tension: 0.3, fill: false
         },
         {
-          label:'Control group (42–44 contribution years)',
+          label: 'Control group (42–44 contribution years)',
           data: ctrl,
-          borderColor:'#1E2B5C', backgroundColor:'rgba(30,43,92,0.06)',
-          borderWidth:2.2, pointRadius:5, pointHoverRadius:7, tension:0.3, fill:false,
-          borderDash:[6,3]
+          borderColor: '#1E2B5C', backgroundColor: 'rgba(30,43,92,0.06)',
+          borderWidth: 2.2, pointRadius: 5, pointHoverRadius: 7, tension: 0.3, fill: false,
+          borderDash: [6,3]
         }
       ]
     },
-    options:{
-      animation:{ duration:1000, easing:'easeOutCubic' },
-      responsive:true,
-      plugins:{
-        legend:{ position:'bottom', labels:{ font:{size:11}, padding:16 } },
-        tooltip:{
-          callbacks:{
-            label(ctx){ return `  ${ctx.dataset.label}: ${(ctx.parsed.y*100).toFixed(1)}%`; }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1000, easing: 'easeOutCubic' },
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 16 } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) { return '  ' + ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%'; }
           }
         }
       },
-      scales:{
-        x:{
-          title:{ display:true, text:'Year (2014 excluded – reform year)', font:{size:11} },
-          grid:{ color:'rgba(0,0,0,0.05)' },
-          ticks:{ font:{size:11} }
+      scales: {
+        x: {
+          title: { display: true, text: 'Year (2014 excluded – reform year)', font: { size: 11 } },
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { font: { size: 11 } }
         },
-        y:{
-          title:{ display:true, text:'Share employed (LFP mean)', font:{size:11} },
-          ticks:{ callback: v => (v*100).toFixed(0)+'%' },
-          grid:{ color:'rgba(0,0,0,0.05)' },
-          min:0.44, max:0.78
+        y: {
+          title: { display: true, text: 'Share employed (LFP, %)', font: { size: 11 } },
+          ticks: { callback: function(v) { return v + '%'; }, font: { size: 10 }, stepSize: 5 },
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          min: 44, max: 78
         }
       }
     }
   });
-})();
+});
 </script>
 
 <p class="footnote">
