@@ -6,22 +6,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Income Gradient (Quintiles) – Rente mit 63</title>
 <style>
-  body  { font-family: sans-serif; padding: 2rem; max-width: 1000px; margin: auto; }
-  h1    { color: #1E2B5C; }
-  h2    { color: #35746E; margin-top: 2rem; }
-  table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
-  th    { background: #1E2B5C; color: white; padding: 10px; text-align: left; }
-  td    { padding: 8px 10px; border-bottom: 1px solid #eee; }
-  tr:nth-child(1) { background: #fdf0f0; font-weight: bold; }
-  tr:nth-child(5) { background: #f5f5f5; }
-  .sig-yes { color: #c0392b; font-weight: bold; }
-  .sig-no  { color: #3266ad; }
-  img      { width: 100%; border: 1px solid #eee; border-radius: 4px; margin-top: 1rem; }
-  .footnote { font-size: 11px; color: #888; margin-top: 0.5rem; }
-  .badge-sig { background: #fde8e8; color: #c0392b; padding: 2px 8px;
-               border-radius: 10px; font-size: 11px; font-weight: bold; }
-  .badge-ns  { background: #e8eef8; color: #3266ad; padding: 2px 8px;
-               border-radius: 10px; font-size: 11px; }
+  .footnote { font-size: 11px; color: #888; margin-top: 0.5rem; line-height: 1.6; }
+
+  /* ── Regression formula box ── */
+  .formula-box {
+    background: #fff; border: 1px solid rgba(0,102,51,0.18);
+    border-left: 4px solid #006633;
+    border-radius: 8px; padding: 1rem 1.4rem;
+    margin: 1.2rem 0 1.8rem;
+    font-size: 0.9rem; color: #1a1a18; line-height: 1.7;
+  }
+  .formula-box .formula-label {
+    font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #006633; margin-bottom: 0.4rem;
+  }
+
+  /* ── Coefficient table ── */
+  .coef-table { width: 100%; border-collapse: collapse; }
+  .coef-table thead tr { background: #006633; }
+  .coef-table th {
+    color: #fff; padding: 11px 16px; text-align: left;
+    font-size: 0.71rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .coef-table th.num { text-align: right; }
+  .coef-table td { padding: 10px 16px; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 0.84rem; }
+  .coef-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .coef-table tbody tr:last-child td { border-bottom: none; }
+  .coef-table tbody tr:hover { background: rgba(0,102,51,0.04); }
+  .coef-table tbody tr.ns-row td { color: #6b6b67; }
+  .badge-sig {
+    display: inline-flex; align-items: center;
+    background: #d1fae5; color: #065f46;
+    padding: 3px 10px; border-radius: 99px; font-size: 0.71rem; font-weight: 700;
+  }
+  .badge-ns {
+    display: inline-flex; align-items: center;
+    background: #f3f4f6; color: #6b7280;
+    padding: 3px 10px; border-radius: 99px; font-size: 0.71rem; font-weight: 600;
+  }
+  .tbl-card {
+    background: #fff; border: 1px solid rgba(0,102,51,0.12);
+    border-radius: 12px; overflow-x: auto;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.04); margin-bottom: 0.75rem;
+  }
 </style>
   <style>
     /* ─── Page wrapper ─── */
@@ -58,7 +86,7 @@
     }
     .nav-back:hover { background: var(--green-light); border-color: rgba(0,102,51,0.3); }
     .nav-brand { font-size: 0.71rem; color: var(--text-3); font-weight: 400; letter-spacing: 0.03em; }
-    .page-content { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .page-content { max-width: 1400px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
     .page-heading { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
     .page-heading .kicker {
       font-size: 0.59rem; font-weight: 700; letter-spacing: 0.15em;
@@ -82,7 +110,7 @@
     .page-footer {
       border-top: 1px solid var(--border);
       padding: 1.5rem 2rem;
-      max-width: 1200px; margin: 0 auto;
+      max-width: 1400px; margin: 0 auto;
       font-size: 0.7rem; color: var(--text-3);
       display: flex; justify-content: space-between; align-items: center;
       flex-wrap: wrap; gap: 0.5rem;
@@ -107,67 +135,71 @@
   Age 62–65 | Böhm & Wilhelmi 2026
 </p>
 
-<h2>Regression: LFP = β₀ + β₁·Post + β₂·DiD + β₃·DiD×Q2 + β₄·DiD×Q3 + β₅·DiD×Q4 + β₆·DiD×Q5 | Individual FE</h2>
+<div class="formula-box">
+  <div class="formula-label">Model Specification</div>
+  LFP = β₀ + β₁·Post + β₂·DiD + β₃·DiD×Q2 + β₄·DiD×Q3 + β₅·DiD×Q4 + β₆·DiD×Q5 &nbsp;|&nbsp; Individual FE
+</div>
 
 <h2>Coefficient Table</h2>
-<table>
+<div class="tbl-card">
+<table class="coef-table">
 <thead>
   <tr>
     <th>Quintile</th>
-    <th>DiD Effect</th>
-    <th>95% CI (low)</th>
-    <th>95% CI (high)</th>
-    <th>Significance</th>
+    <th class="num">DiD Effect</th>
+    <th class="num">95% CI (low)</th>
+    <th class="num">95% CI (high)</th>
+    <th style="text-align:center">Significance</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td>Q1 (lowest)</td>
-    <td>-35.1%</td>
-    <td>-54.6%</td>
-    <td>-15.7%</td>
-    <td><span class="badge-sig">p &lt; 0.05</span></td>
+    <td><strong>Q1 — Lowest income</strong></td>
+    <td class="num">−35.1%</td>
+    <td class="num">−54.6%</td>
+    <td class="num">−15.7%</td>
+    <td style="text-align:center"><span class="badge-sig">p &lt; 0.05</span></td>
   </tr>
   <tr>
     <td>Q2</td>
-    <td>-30.9%</td>
-    <td>-50.6%</td>
-    <td>-11.2%</td>
-    <td><span class="badge-sig">p &lt; 0.05</span></td>
+    <td class="num">−30.9%</td>
+    <td class="num">−50.6%</td>
+    <td class="num">−11.2%</td>
+    <td style="text-align:center"><span class="badge-sig">p &lt; 0.05</span></td>
   </tr>
   <tr>
     <td>Q3</td>
-    <td>-23%</td>
-    <td>-40.1%</td>
-    <td>-5.9%</td>
-    <td><span class="badge-sig">p &lt; 0.05</span></td>
+    <td class="num">−23.0%</td>
+    <td class="num">−40.1%</td>
+    <td class="num">−5.9%</td>
+    <td style="text-align:center"><span class="badge-sig">p &lt; 0.05</span></td>
   </tr>
   <tr>
     <td>Q4</td>
-    <td>-21.8%</td>
-    <td>-38.3%</td>
-    <td>-5.3%</td>
-    <td><span class="badge-sig">p &lt; 0.05</span></td>
+    <td class="num">−21.8%</td>
+    <td class="num">−38.3%</td>
+    <td class="num">−5.3%</td>
+    <td style="text-align:center"><span class="badge-sig">p &lt; 0.05</span></td>
   </tr>
-  <tr>
-    <td>Q5 (highest)</td>
-    <td>-4.6%</td>
-    <td>-15.2%</td>
-    <td>6%</td>
-    <td><span class="badge-ns">p &ge; 0.05</span></td>
+  <tr class="ns-row">
+    <td>Q5 — Highest income</td>
+    <td class="num">−4.6%</td>
+    <td class="num">−15.2%</td>
+    <td class="num">+6.0%</td>
+    <td style="text-align:center"><span class="badge-ns">p ≥ 0.05</span></td>
   </tr>
 </tbody>
 </table>
+</div>
 <p class="footnote">
-  Reference category: Q1 (lowest income quintile) | 
-  Clustered SE at pid level | 
-  Effects calculated as linear combinations of did + did:inc_qX
+  Clustered SE at pid level &nbsp;|&nbsp; Individual FE (pid) &nbsp;|&nbsp;
+  Effects = linear combinations of β₂·DiD + βₓ·DiD×Qx &nbsp;|&nbsp; N = 1,674
 </p>
 
 <h2>Coefficient Plot</h2>
 
-<div style="background:var(--surface,#fff);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.5rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);margin-top:1rem;">
-  <canvas id="rq2Chart" height="220"></canvas>
+<div style="background:var(--surface,#fff);border:1px solid rgba(0,102,51,0.12);border-radius:12px;padding:1.5rem;box-shadow:0 2px 16px rgba(0,0,0,0.04);margin-top:1rem;">
+  <div style="position:relative;height:280px;"><canvas id="rq2Chart"></canvas></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
@@ -224,6 +256,7 @@
       indexAxis: 'y',
       animation:{ duration:900, easing:'easeOutQuart' },
       responsive: true,
+      maintainAspectRatio: false,
       plugins:{
         legend:{ display:false },
         tooltip:{
@@ -276,9 +309,9 @@
 
 
 <p class="footnote">
-  N = 1,674 | Individual FE (pid) | 
-  Error bars = 95% Confidence Intervals | 
-  Red = p &lt; 0.05, Blue = p &ge; 0.05
+  N = 1,674 &nbsp;|&nbsp; Individual FE (pid) &nbsp;|&nbsp;
+  Error bars = 95% Confidence Intervals &nbsp;|&nbsp;
+  Green = p &lt; 0.05 (significant) &nbsp;|&nbsp; Grey = p &ge; 0.05 (not significant)
 </p>
 
 </div><!-- .page-content -->
